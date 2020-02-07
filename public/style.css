@@ -1,0 +1,23 @@
+/*#region css-counter*/
+
+tbody{
+    counter-reset: myCounter;
+}
+tbody tr{
+    counter-increment: myCounter;
+}
+
+tbody tr td:first-child::before{
+    content:counter(myCounter);
+    font-weight: 900;
+}
+
+/*#endregion*/
+tbody th{
+    font-weight: 900;
+}
+
+tbody tr td{
+    word-break: break-all;
+    vertical-align: middle;
+}
