@@ -12,10 +12,10 @@ exports.Status=Status;
 class Task{
     static count=1;
     constructor(title, start, end, status){
-        let dateNow=new Date().toString().split('T')[0];
+        let dateNow=new Date().toISOString().split('T')[0];
         this.title=title || '';
         this.startDate=start || dateNow;
-        this.endDate=start || dateNow;
+        this.endDate=end || dateNow;
         this.status=status || null;
         this.id=Task.count++;
     }
