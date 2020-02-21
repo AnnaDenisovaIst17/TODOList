@@ -1,5 +1,5 @@
 const express=require('express');
-const urlencoded=require('body-parser').urlencoded({extended:true});
+const bodyParser=require('body-parser');
 const routes=require('./routes');
 
 
@@ -12,7 +12,8 @@ app.set('view engine','pug');
 //задаем директорию со статическими файлами
 app.use(express.static(__dirname+'/public'));
 //заадаем парсер тела запроса (Request body)
-app.use(urlencoded);
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 //Добавляем маршрутизатор
 app.use('/', routes);
 
