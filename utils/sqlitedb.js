@@ -16,6 +16,7 @@ exports.getStatuses=function(id){
             query+=' WHERE ID= ?';
             params.push(id);
         }
+        
         connection().all(query,params,(err,result)=>{
             if (err) reject(err);
             else{
@@ -86,6 +87,26 @@ exports.addTask=function(task){
         }).close();
     });
 }
+exports.addLogger=function(log){
+    return new Promise((resolve,reject)=>{
+        if (!log){
+            reject({message:'log is empty'});
+            return;
+        }
+        let dateNow=new Date().toISOString().split('T')[0];
+        let query=`INSERT INTO Logger (whoDo, whatDo, whenDo) VALUES(?,?,?)`;
+        let params=[
+            log.whoDo || '',
+            log.whatDo || '',
+            log.whenDo || '',
+        ];
+        connection().run(query,params,(err,result)=>{
+            if (err) reject(err);
+            else resolve(result);
+        }).close();
+    });
+
+}
 
 exports.updateTask=function(task){
     return new Promise((resolve,reject)=>{
@@ -142,6 +163,32 @@ exports.getLastTask=function(){
             }
             else{
                 result=result ? result[0] : null;
+                resolve(result);
+            }
+        }).close();
+    });
+}
+exports.getRole=function({login,password}){
+    return new Promise((resolve,reject)=>{
+        let context=connection();
+        let query=`SELECT TypeUser.id FROM User
+                    INNER Join TypeUser ON TypeUser.id=User.idTypeUser
+                    WHERE login= ? AND password = ?
+                    LIMIT 1`;
+        let params=[login,password];
+
+        context.all(query,params,(err,result)=>{
+            if (err){
+                reject(err)
+            }
+            else{
+                if (result && result[0]){
+                    result=result[0].id==1
+                        ? 'User'
+                        : (result[0].id==2 ? 'Admin' : null);            
+                }else{
+                    result=null;
+                }
                 resolve(result);
             }
         }).close();

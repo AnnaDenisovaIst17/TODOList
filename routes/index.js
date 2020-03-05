@@ -11,8 +11,10 @@ router.post('/update',crud.update);
 router.get('/delete/:id', crud.delete);
 
 router.get ('/api',api.info);
-router.get('/api/tasks',api.get);
-router.post('/api/tasks',api.add);
+router.get('/api/tasks',api.auth,api.get);
+router.post('/api/tasks',api.auth,api.add);
+router.delete('/api/tasks',api.auth,api.delete);
+router.put('/api/tasks',api.auth,api.update);
 
 //экспортируем маршрутизатор
 module.exports=router;
